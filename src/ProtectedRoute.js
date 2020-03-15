@@ -11,7 +11,7 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
             {...rest}
             render = {
                 (props) => {
-                    if(true) {
+                    if(user.value) {
                         return <Component { ...props } />
                     } else {
                         return <Redirect to={'/login'}/>
@@ -23,5 +23,3 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 }
 
 export default ProtectedRoute;
-
-//treba da bude user.value
