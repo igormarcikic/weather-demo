@@ -35,7 +35,7 @@ const DisplayToday = ({city}) => {
         console.log('usee effect fired')
         const getWeather = async() => {
             let cityID = city.value.id;
-            const res = await fetch(`http://api.openweathermap.org/data/2.5/weather?id=${cityID}&appid=667259d3e642f1444ef8a44dc01be273`);
+            const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityID}&appid=667259d3e642f1444ef8a44dc01be273`);
             const data = await res.json();
             setWeather({value: data})
         }
