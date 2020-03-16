@@ -12,7 +12,6 @@ import { orange, deepPurple, grey } from '@material-ui/core/colors';
 import {
   
 } from '@material-ui/core';
-import GetMe from './getMe';
 
 const theme = createMuiTheme({
   palette: {
@@ -44,10 +43,9 @@ function App() {
           <AnimatePresence exitBeforeEnter>
             <Switch>
                 <ProtectedRoute exact path="/" component={Main} />
-                <Route exact path="/profile" component={UserProfile} />
+                <ProtectedRoute exact path="/profile" component={UserProfile} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/login" component={LogIn} />
-                <Route exact path="/get" component={GetMe} />
             </Switch>
           </AnimatePresence>
           </MuiThemeProvider>

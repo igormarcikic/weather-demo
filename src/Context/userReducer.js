@@ -5,12 +5,18 @@ const reducer = (state, action) => {
 		case actionType.ADD_USER: 
 			return {
 				...state,
-				value: action.payload
+				value: action.payload,
+				isLoading: false
 			}
 		case actionType.LOG_OUT:
 			return {
 				...state,
 				value: null
+			}
+		case actionType.LOADING:
+			return {
+				...state,
+				isLoading: true
 			}
 		default: 
 			return state

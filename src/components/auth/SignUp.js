@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Context } from './../../Context/Context';
-import { addUser } from './../../Context/userActions';
+import { addUser, LoadingStatus } from './../../Context/userActions';
 import { makeStyles } from '@material-ui/core/styles';
 import fb from './../../config/fbConfig';
 import { Link, useHistory } from 'react-router-dom';
@@ -11,7 +11,8 @@ import {
 	TextField,
 	InputAdornment,
 	Typography,
-	Button 
+	Button,
+	CircularProgress
 } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -24,7 +25,8 @@ const useStyles = makeStyles(theme => ({
     	height: '100vh',
     	display: 'flex',
     	flexDirection: 'column',
-    	justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	fonts: {
 		fontWeight: '600',
@@ -50,7 +52,7 @@ const SignUp = () => {
 	})
 	const [showPassword, setShowPassword] = useState({show: false});
 
-	const {userDispatch} = useContext(Context);
+	const {dispatch, user} = useContext(Context);
 	const history = useHistory();
 
 	const showPass = () => {
@@ -72,6 +74,7 @@ const SignUp = () => {
 		const password = fieldsState.password;
 		
 		if(name && username && email && password) {
+			dispatch(LoadingStatus())
 			let ref = fb.firestore().collection('users').doc(username);
 			ref.get()
 				.then(doc=> {
@@ -93,7 +96,7 @@ const SignUp = () => {
 									console.log(err.message)
 								})
 
-							userDispatch(addUser(cred))
+							dispatch(addUser(cred))
 			
 							setFieldsState({
 								name: null,
@@ -113,7 +116,14 @@ const SignUp = () => {
 		}
 	}
 
-	return (
+	return user.isLoading ?
+	(	
+		<Container 
+		className={classes.root}
+		>
+			<CircularProgress variant="indeterminate" color="secondary" size="80px" />
+		</Container>
+	) :  (
 		<motion.div
 			initial={{ scale: 0 }}
 			animate={{ scale: 1 }}
@@ -193,6 +203,7 @@ const SignUp = () => {
 				        onInput={(e)=> inputFieldHandler(e)}
 			        />
 			        <TextField
+						autoComplete="true"
 			       		fullWidth
 			       		margin = "normal"
 			          	placeholder = 'Enter password...'

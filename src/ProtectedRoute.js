@@ -23,3 +23,5 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 }
 
 export default ProtectedRoute;
+
+//treba da bude user.value

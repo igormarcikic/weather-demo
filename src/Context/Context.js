@@ -3,14 +3,15 @@ import UserReducer from './userReducer';
 
 export const Context = createContext();
 const initialUserState = {
-	value: null
+	value: null,
+	isLoading: false
 };
 
 const Provider = (props) => {
-	const [user, userDispatch] = useReducer(UserReducer, initialUserState);
+	const [user, dispatch] = useReducer(UserReducer, initialUserState);
 
 	return (
-			<Context.Provider value={{user, userDispatch}}>
+			<Context.Provider value={{user, dispatch}}>
 				{props.children}
 			</Context.Provider>
 		)

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import * as APIs from './../../API';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Box,
@@ -8,10 +7,14 @@ import {
 
 const useStyles = makeStyles(theme => ({
     root: {
-            
+        maxWidth: 400,
+    	height: '100vh',
+    	display: 'flex',
+    	flexDirection: 'column',
+    	justifyContent: 'center'
     },
     title: {
-        fontSize: 200,
+        fontSize: 150,
         color: 'white',
         textAlign: 'center'
     },
@@ -76,14 +79,14 @@ const DisplayToday = ({city}) => {
                     alignItems = 'center'
                 >
                     <Typography 
-                        variant="h3" 
+                        variant="h4" 
                         component="h2"
                         color="textSecondary"
                         className={classes.city}
                         >
                         {weather.value.name}:
                     </Typography>
-                     <img src={image} /></Box>
+                     <img src={image} alt="weather icon" /></Box>
                 <Box>Wind: {getKPH(weather.value.wind.speed)}km/h</Box>
                 <Box>Humidity: {weather.value.main.humidity} %</Box>
                 <Box>Pressure: {weather.value.main.pressure} hPa</Box>

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
 import { 
     TextField,
     CircularProgress
 } from '@material-ui/core';
-import citiesJSON from './../../API/cityList.json';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const CitySearch = (props) => {

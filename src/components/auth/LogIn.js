@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Context } from './../../Context/Context';
+import { LoadingStatus } from './../../Context/userActions';
 import { addUser } from './../../Context/userActions';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useHistory } from 'react-router-dom';
@@ -23,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     	height: '100vh',
     	display: 'flex',
     	flexDirection: 'column',
-    	justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
     },
 	fonts: {
 		fontWeight: '600',
@@ -47,7 +49,7 @@ const LogIn = () => {
 	})
 	const [showPassword, setShowPassword] = useState({show: false});
 
-	const {userDispatch} = useContext(Context);
+	const {dispatch, user} = useContext(Context);
 	const history = useHistory();
 
 	const showPass = () => {
@@ -65,32 +67,38 @@ const LogIn = () => {
 		e.preventDefault()
 		const email = fieldsState.email;
 		const password = fieldsState.password;
-
+		
 		if(email && password) {
+			dispatch(LoadingStatus())
 			fb.auth().signInWithEmailAndPassword(email, password)
 				.then(cred => {
-					userDispatch(addUser(cred))
+					dispatch(addUser(cred))
 					setFieldsState({
 						email: null,
 						password: null
 					})
+					console.log(user)
 					setErrorState({value: null})
 					history.push("/");
 				}).catch(err=> {
 					setErrorState({value: err.message})
 				}) 
+		} else {
+			setErrorState({value: 'Fill in all fields!'})
 		}
 	}
 
-	return (
+	return user.isLoading ?
+	(	
+		<Container 
+		className={classes.root}
+		>
+			<CircularProgress variant="indeterminate" color="secondary" size="80px" />
+		</Container>
+	) : (
 		<motion.div
 			initial={{ scale: 0 }}
 			animate={{ scale: 1 }}
-			transition={{
-				type: "spring",
-				stiffness: 160,
-				damping: 20
-			}}
 			exit={{ scale: 0 }}
 		>
 			<Container 
@@ -123,6 +131,7 @@ const LogIn = () => {
 				        onInput={(e)=> inputFieldHandler(e)}
 			        />
 			        <TextField
+						autoComplete="true"
 			       		fullWidth
 			       		margin = "normal"
 			          	placeholder = 'Enter password...'
@@ -153,7 +162,7 @@ const LogIn = () => {
 				        	color="primary"
 				        	onClick={(e)=> submitFormHandler(e)}
 				        >
-				        	Log In
+							 Log In
 				        </Button>
 				        <Button 
 				        	variant="contained" 
@@ -165,7 +174,7 @@ const LogIn = () => {
 				</form>
 			</Container>
 			</motion.div>
-		)
+		)  
 }
 
 export default LogIn;

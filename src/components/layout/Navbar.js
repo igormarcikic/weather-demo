@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     },
     buttons: {
         fontWeight: 500,
-        fontSize: 17
+        fontSize: 14
     }
 }));
 
@@ -48,7 +48,7 @@ const Navbar = () => {
     const [state, setState] = useState({
         menuOpen: false
     });
-    const { user, userDispatch } = useContext(Context);
+    const { user, dispatch } = useContext(Context);
     const history = useHistory();
 
     const signedInLinks = [{
@@ -89,7 +89,7 @@ const Navbar = () => {
 
     const logOut = () => {
         fb.auth().signOut().then(()=>{
-            userDispatch(logOutUser());
+            dispatch(logOutUser());
             history.push("/");
         }).catch(err=>{
             console.log(err.message)
@@ -111,15 +111,6 @@ const Navbar = () => {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {/* <List className={classes.list}>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
-            <Divider /> */}
 
         <MenuList className={classes.linksList}>
           {user.value ? signedInLinks.map((link, index)=>(
@@ -151,23 +142,16 @@ const Navbar = () => {
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
                         <Button color="primary" variant="contained" component={Link} to="/" className={classes.buttons}>
-                            Weather App
+                            Weather
                         </Button>
                     </Typography>
                     {user.value ? 
-                        <Box 
-                            display="flex"
-                            >
-                            <Button 
-                                color="inherit"
-                                >{user.value.user.email}
-                            </Button> 
                             <Button 
                                 color="inherit" 
                                 onClick={()=> logOut()}
                                 >Logout
                             </Button>
-                        </Box> : null}
+                        : null}
                 </Toolbar>
             </AppBar>
             {/* App bar end */}
